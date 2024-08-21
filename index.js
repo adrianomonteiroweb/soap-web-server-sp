@@ -2,26 +2,30 @@ const https = require("https");
 const axios = require("axios");
 const fs = require("fs");
 
-const { getSignedXml } = require("./xml_crypto");
-const { pedidoXMLConsultaNFePeriodo } = require("./xmls");
+const { buildEnvelope } = require("./utils");
 
-const XML_SEM_ASSINATURA = pedidoXMLConsultaNFePeriodo({
-  CPF_CNPJ_Remetente: "36114236882",
-  CPF_CNPJ: "62391818000130",
-  inscricao: "123456",
-  dt_inicio: "2024-07-01",
-  dt_fim: "2024-07-31",
-  numero_pagina: "1",
-});
-
-const certificate_path = "./certificado/certificado_sem_senha.pem";
-const private_key = "./certificado/private.key";
-
-const XML_ASSINADO = getSignedXml(XML_SEM_ASSINATURA, certificate_path);
-
+const certificate_path = "./certificado/certificado.pem";
+const private_key = "./certificado/private.pem";
 const certificate = fs.readFileSync(certificate_path);
-const privateKey = fs.readFileSync(certificate_path);
-const passphrase = "1234";
+const privateKey = fs.readFileSync(private_key);
+
+const envelope_file = "./xmls/envelope.xml";
+const mensagem_file = "./xmls/mensagem.xml";
+
+const envelope = buildEnvelope(
+  certificate,
+  privateKey,
+  {
+    cpfcnpjRemetente: "36114236882",
+    cnpjRemetente: "62391818000130",
+  },
+  fs.readFileSync(mensagem_file).toString(),
+  fs.readFileSync(envelope_file).toString()
+);
+
+fs.writeFileSync("signed.xml", envelope);
+
+console.log("envelope", typeof envelope);
 
 const config = {
   method: "post",
@@ -30,11 +34,10 @@ const config = {
     "Content-Type": "text/xml",
   },
   requestCert: true,
-  data: XML_ASSINADO.data,
+  data: envelope,
   httpsAgent: new https.Agent({
-    // ca: XML_ASSINADO.certificate,
     cert: certificate,
-    // passphrase: passphrase,
+    key: privateKey,
     rejectUnauthorized: false,
   }),
 };

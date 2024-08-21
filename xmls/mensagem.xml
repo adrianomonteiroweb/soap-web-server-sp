@@ -1,0 +1,13 @@
+<PedidoConsultaCNPJ>
+	<Cabecalho Versao="1">
+		<CPFCNPJRemetente>
+			{{cpfcnpjRemetente}}
+		</CPFCNPJRemetente>
+		<Versao>
+			1
+		</Versao>
+		<CNPJRemetente>
+			{{cnpjRemetente}}
+		</CNPJRemetente>
+	</Cabecalho>
+</PedidoConsultaCNPJ>
