@@ -12,7 +12,7 @@ const privateKey = fs.readFileSync(private_key);
 const envelope_file = "./xmls/envelope.xml";
 const mensagem_file = "./xmls/mensagem.xml";
 
-const envelope = buildEnvelope(
+let envelope = buildEnvelope(
   certificate,
   privateKey,
   {
@@ -26,9 +26,11 @@ const envelope = buildEnvelope(
   fs.readFileSync(envelope_file).toString()
 );
 
+envelope = envelope.replace(/\s+/g, "").trim();
+
 fs.writeFileSync("signed.xml", envelope);
 
-console.log("envelope", typeof envelope);
+console.log("envelope", typeof envelope, envelope);
 
 const config = {
   method: "post",
