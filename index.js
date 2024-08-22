@@ -16,8 +16,11 @@ const envelope = buildEnvelope(
   certificate,
   privateKey,
   {
-    cpfcnpjRemetente: "36114236882",
-    cnpjRemetente: "62391818000130",
+    CPFCNPJRemetente: "36114236882",
+    CPFCNPJRemetente: "62391818000130",
+    Inscricao: "123456789",
+    dtInicio: "2020-01-01",
+    dtFim: "2020-01-01",
   },
   fs.readFileSync(mensagem_file).toString(),
   fs.readFileSync(envelope_file).toString()

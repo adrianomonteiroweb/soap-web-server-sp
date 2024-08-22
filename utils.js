@@ -2,18 +2,23 @@ const mustache = require("mustache");
 const SignedXml = require("xml-crypto").SignedXml;
 
 function buildEnvelope(cert, key, data, messageTemplate, envelopeTemplate) {
-  const message = mustache.render(messageTemplate, data);
+  const message = mustache.render(messageTemplate, {
+    ...data,
+    DigestValue: _cleanKey(cert),
+    SignatureValue: "{{SignatureValue}}",
+    X509Certificate: String(cert),
+  });
 
   const envelope = mustache.render(envelopeTemplate, {
     message,
   });
+  const signature = signXML(cert, key, envelope);
 
-  // console.log("MESSAGE TEMPLATE", envelope);
-  // process.exit(0);
-  // const envelope_signed = signXML(cert, key, envelope);
-  // console.log("envelope", envelope_signed);
+  const xml_signed = mustache.render(envelope, {
+    SignatureValue: signature,
+  });
 
-  return envelope;
+  return xml_signed;
 }
 
 function signXML(cert, key, xml) {
@@ -44,7 +49,7 @@ function signXML(cert, key, xml) {
   signer.signingKey = key;
   signer.computeSignature(xml);
 
-  return signer.getSignedXml();
+  return signer.getSignatureXml();
 }
 
 function _cleanKey(key) {

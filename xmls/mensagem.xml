@@ -1,13 +1,57 @@
-<PedidoConsultaCNPJ>
+<PedidoConsultaNFePeriodo xmlns:p1="http://www.prefeitura.sp.gov.br/nfe" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<Cabecalho Versao="1">
 		<CPFCNPJRemetente>
-			{{cpfcnpjRemetente}}
+			<CNPJ>
+				{{CPFCNPJRemetente}}
+			</CNPJ>
 		</CPFCNPJRemetente>
-		<Versao>
+		<CPFCNPJ>
+			<CNPJ>
+				{{CPFCNPJRemetente}}
+			</CNPJ>
+		</CPFCNPJ>
+		<Inscricao>
+			{{Inscricao}}
+		</Inscricao>
+		<dtInicio>
+			{{dtInicio}}
+		</dtInicio>
+		<dtFim>
+			{{dtFim}}
+		</dtFim>
+		<NumeroPagina>
 			1
-		</Versao>
-		<CNPJRemetente>
-			{{cnpjRemetente}}
-		</CNPJRemetente>
+		</NumeroPagina>
 	</Cabecalho>
-</PedidoConsultaCNPJ>
+	<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+		<SignedInfo>
+			<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315">
+			</CanonicalizationMethod>
+			<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1">
+			</SignatureMethod>
+			<Reference URI="">
+				<Transforms>
+					<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature">
+					</Transform>
+					<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315">
+					</Transform>
+				</Transforms>
+				<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1">
+				</DigestMethod>
+				<DigestValue>
+					{{DigestValue}}
+				</DigestValue>
+			</Reference>
+		</SignedInfo>
+		<SignatureValue>
+			{{SignatureValue}}
+		</SignatureValue>
+		<KeyInfo>
+			<X509Data>
+				<X509Certificate>
+					{{X509Certificate}}
+				</X509Certificate>
+			</X509Data>
+		</KeyInfo>
+	</Signature>
+</PedidoConsultaNFePeriodo>
