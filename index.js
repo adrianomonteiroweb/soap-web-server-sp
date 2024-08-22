@@ -12,20 +12,25 @@ const privateKey = fs.readFileSync(private_key);
 const envelope_file = "./xmls/envelope.xml";
 const mensagem_file = "./xmls/mensagem.xml";
 
-const envelope = buildEnvelope(
+let envelope = buildEnvelope(
   certificate,
   privateKey,
   {
-    cpfcnpjRemetente: "36114236882",
-    cnpjRemetente: "62391818000130",
+    CPFCNPJRemetente: "36114236882",
+    CPFCNPJRemetente: "62391818000130",
+    Inscricao: "123456789",
+    dtInicio: "2020-01-01",
+    dtFim: "2020-01-01",
   },
   fs.readFileSync(mensagem_file).toString(),
   fs.readFileSync(envelope_file).toString()
 );
 
+envelope = envelope.replace(/\s+/g, "").trim();
+
 fs.writeFileSync("signed.xml", envelope);
 
-console.log("envelope", typeof envelope);
+console.log("envelope", typeof envelope, envelope);
 
 const config = {
   method: "post",
